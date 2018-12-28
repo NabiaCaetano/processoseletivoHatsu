@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-br"> 
+<head> 
+    <title>Lentes HATSU</title>
+        <meta name="description" content="lentes HATSU">
+        <meta charset="UTF-8"/>
+        <!-- Adequar a vários disp. tamanho -->
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <!-- Compatibilidade automática para usuários do internet explore -->
+        <meta http-equiv="X-UA-compatible" content="ie=edge" >
+        <!-- Aparecer favicon -->
+        <link rel="shortcut" href="favicon.png" type="image/x-icon">
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+</head> 
+
+<body>
+    <h1>LENTES </h1><br>
+        <div class="row">
+            <div class="col-md-6">
+                <h6>Por favor, digite as informações contidas em sua receita oftálmica:</h6><br>
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label for="esfEsquerdo" class="col-lg-12 control-label">Grau Esférico Olho Esquerdo</label>
+                            <div class="col-lg-6">
+                                <!-- Step para num subsequentes (0.25+) -->
+                                <input type="number" step="0.25" max="0" min="-15" class="form-control" id="esfEsquerdo" placeholder="Digite um nº">
+                            </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="esfDireito" class="col-lg-12 control-label">Grau Esférico Olho Direito</label>
+                            <div class="col-lg-6">
+                                <input type="number" step="0.25" max="0" min="-15" class="form-control" id="esfDireito" placeholder="Digite um nº">
+                            </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="cilEsquerdo" class="col-lg-12 control-label">Grau Cilíndrico Olho Esquerdo</label>
+                            <div class="col-lg-6">
+                                <input type="number" step="0.25" max="0" min="-6" class="form-control" id="cilEsquerdo" placeholder="Digite um nº">
+                            </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="cildireito" class="col-lg-12 control-label">Grau Cilíndrico Olho Direito</label>
+                            <div class="col-lg-6">
+                                <input type="number" step="0.25" max="0" min="-6" class="form-control" id="cildireito" placeholder="Digite um nº">
+                            </div>
+                            <br>
+                            <button type="button" class="btn btn-primary" onclick="window.qualLente()">Enviar</button>
+                    </div>  
+                </form>
+            </div>
+            <!-- tipo de lentes sugerida para o usuário-->
+            <div class="col-md-6">
+                <div id="tiposLente" class="row">
+                    <div id="lentePrime" class="col-md-6 d-none">
+                        <h2>Prime</h2>
+                    </div>
+                    <div id="lenteVision" class="col-md-6 d-none">
+                        <h2>Vision</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+                //situações em que serão pedido ao usuário que digite um num válido.
+                function validarFormulario(esfEsq, esfDir, cilEsq, cilDir){
+                    if(esfEsq > 0 || esfEsq < -15){
+                        return false;
+                    }else if(esfDir > 0 || esfDir < -15){
+                        return false;
+                    }else if (cilEsq > 0 || cilEsq < -6){
+                        return false;
+                    }else if (cilDir > 0 || cilDir < -6){
+                        return false;
+                    }else if (esfEsq == 0 && esfDir == 0 && cilDir == 0 && cilEsq == 0){
+                        return false;
+                    }
+                    return true;
+                }
+                //captura o valor que está na tela
+                (function(){
+                    window.qualLente = function(){
+                        var esfEsq = parseFloat(document.querySelector('#esfEsquerdo').value || 0);
+                        var esfDir = parseFloat(document.querySelector('#esfDireito').value || 0);
+                        
+                        var cilEsq = parseFloat(document.querySelector('#cilEsquerdo').value || 0);
+                        var cilDir = parseFloat(document.querySelector('#cilEsquerdo').value || 0);
+            
+                        if(!validarFormulario(esfEsq, esfDir, cilEsq, cilDir)){
+                            alert('Preencha os campos corretamente.');
+                            return;
+                        }
+                        var tipoLente = "";
+                        var qualLente = "";
+                        
+                        //Limpando os tipos de lente da tela
+                        document.querySelector('#lentePrime').classList.add("d-none")
+                        document.querySelector('#lenteVision').classList.add("d-none")
+
+                        if ( (esfDir <= -3 && esfDir >= -12) || (esfEsq <= -3 && esfEsq >= -12) && (cilEsq == 0 && cilDir == 0) ) {
+                        
+                            // valida - remove a class d-none e exibe Prime
+                            console.log('Prime');
+                            document.querySelector('#lentePrime').classList.remove("d-none")
+            
+                        } else if ( (esfDir <= -3 && esfDir >= -10) || (esfEsq <= -3 && esfEsq >= -10) && (cilEsq >= -2 || cilDir >= -2) ) {
+                            
+                            // valida - remove a class d-none e exibe Prime
+                            console.log('Prime');
+                            document.querySelector('#lentePrime').classList.remove("d-none")
+            
+                        }  else if ( ( (esfDir <= 0 && esfDir >= -15) || (esfEsq <= 0 && esfEsq >= -15)) && ( (cilEsq <= 0 && cilEsq >= -5) && (cilDir <= 0 && cilDir >= -5)) ) {
+            
+                            // valida - remove a class d-none e exibe Vision
+                            console.log('Vison');
+                            document.querySelector('#lenteVision').classList.remove("d-none")
+            
+                        } else {
+                            console.log('Não encontrado');
+                        }
+                    }
+                })();
+                             
+            </script>
+    </body> 
+</html>
